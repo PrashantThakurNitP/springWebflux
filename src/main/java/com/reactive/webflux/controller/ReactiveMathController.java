@@ -3,6 +3,7 @@ package com.reactive.webflux.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,5 +33,14 @@ public class ReactiveMathController {
 	//backend service act as publisher and frontend (or some other service) will be subscribing to it
 	//so in our code we will not be subscribing but we will be writing publisher of some type ie Mono or flux
 	// we are returning lazily in async way we should not use .block()
+	
+	
+	//instead of sending whole response we can send streaming response
+	
+	@GetMapping(value="table/{input}/stream", produces=MediaType.TEXT_EVENT_STREAM_VALUE)
+	public Flux<Response> multiplicationTableStream(@PathVariable int input) {
+		return this.mathService.multiplicationTable(input);
+		
+	}
 
 }
