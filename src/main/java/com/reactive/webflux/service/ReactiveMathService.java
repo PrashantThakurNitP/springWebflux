@@ -23,8 +23,10 @@ public class ReactiveMathService {
 	
 	public Flux<Response> multiplicationTable(int input) {
 		return Flux.range(1, 10)
-			//	.doOnNext(i->SleepUtil.sleepSeconds(input)) it is blocking sleep. we need non blocking sleep
-				.delayElements(Duration.ofSeconds(1)) //it is non blocking sleep
+				.doOnNext((i)->System.out.println("checking"))
+				.doOnNext((i)->System.out.println("thread name "+Thread.currentThread().getName()+" "+i))// it is blocking sleep. we need non blocking sleep
+				//.doOnNext(i->SleepUtil.sleepSeconds(1))
+					.delayElements(Duration.ofSeconds(1)) //it is non blocking sleep
 				.doOnNext(i->System.out.println("Reactive math service processing:"+i))
 				.map(i->new Response(i*input));
 		
